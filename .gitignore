@@ -1,2 +1,4 @@
+/target
+**/*.rs.bk
 perceptron.yaml
 multilayer_perceptron
