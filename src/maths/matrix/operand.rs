@@ -1,0 +1,294 @@
+use super::*;
+
+/* Right hand side must always be referenced to keep integrity */
+
+/* PublicAttribute operands */
+
+pub trait MatrixOperand {
+	fn hadamard(& self, rhs: & dyn PublicAttribute) -> Self; // keep integrity
+	fn hadamard_inplace(self, rhs: & dyn PublicAttribute) -> Self; // without keeping integrity
+}
+
+pub trait VectorOperand {
+	fn dot(& self, rhs: & dyn PublicAttribute) -> f64;
+}
+
+impl MatrixOperand for Matrix {
+
+	fn hadamard(& self, rhs: & dyn PublicAttribute) -> Self {
+		assert!(self.col == rhs.col() && self.row == rhs.row());
+
+		let col = self.col;
+		let row = self.row;
+		let value : Vec<f64> = self.value.iter().zip(rhs.value()).map(|(e1, e2)| {
+			*e1 * *e2
+		}).collect();
+
+
+		Self {value, col, row}
+	}
+
+	fn hadamard_inplace(mut self, rhs: & dyn PublicAttribute) -> Self {
+		assert!(self.col() == rhs.col() && self.row() == rhs.row());
+
+		self.value.iter_mut().zip(rhs.value()).for_each(|(e1, e2)| {
+			*e1 *= e2;
+		});
+
+		self
+	}
+
+}
+
+impl MatrixOperand for Vector {
+
+	fn hadamard(& self, rhs: & dyn PublicAttribute) -> Self {
+		assert!(rhs.col() == 1 && self.value.len() == rhs.row());
+
+		let value : Vec<f64> = self.value.iter().zip(rhs.value()).map(|(e1, e2)| {
+			*e1 * *e2
+		}).collect();
+
+		Self {value}
+	}
+
+	fn hadamard_inplace(mut self, rhs: & dyn PublicAttribute) -> Self {
+		assert!(rhs.col() == 1 && self.value.len() == rhs.row());
+
+		self.value.iter_mut().zip(rhs.value()).for_each(|(e1, e2)| {
+			*e1 *= *e2;
+		});
+
+		self
+	}
+}
+
+impl VectorOperand for dyn PublicAttribute {
+
+	fn dot(& self, rhs: & dyn PublicAttribute) -> f64 {
+		assert!(self.value().len() == rhs.value().len());
+
+		let mut sum = 0.0;
+
+		self.value().iter().zip(rhs.value()).for_each(|(e1, e2)| {
+			sum += *e1 * *e2;
+		});
+
+		sum
+	}
+}
+
+/* Operator overload for vector */
+
+impl ops::Add<& Vector> for & Vector {
+	type Output = Vector;
+
+	fn add(self, rhs : & Vector) -> Vector {
+		assert!(self.value.len() == rhs.value.len());
+
+		let value = self.value.iter().zip(& rhs.value).map(|(e1, e2)| {
+			*e1 + *e2
+		}).collect();
+
+		Vector {value}
+	}
+}
+
+impl ops::Add<& Vector> for Vector {
+	type Output = Vector;
+
+	fn add(mut self, rhs : & Vector) -> Vector {
+		assert!(self.value.len() == rhs.value.len());
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 += *e2;
+		});
+
+		self
+	}
+}
+
+impl ops::Sub<& Vector> for & Vector {
+	type Output = Vector;
+
+	fn sub(self, rhs : & Vector) -> Vector {
+		assert!(self.value.len() == rhs.value.len());
+
+		let value : Vec<f64> = self.value.iter().zip(& rhs.value).map(|(e1, e2)| {
+			*e1 - *e2
+		}).collect();
+
+		Vector {value}
+	}
+}
+
+impl ops::Sub<& Vector> for Vector {
+	type Output = Vector;
+
+	fn sub(mut self, rhs : & Vector) -> Vector {
+		assert!(self.value.len() == rhs.value.len());
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 -= *e2;
+		});
+
+		self
+	}
+}
+
+/* Operator overload for matrix */
+
+impl ops::Add<& Matrix> for & Matrix {
+	type Output = Matrix;
+
+	fn add(self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		let col = self.col;
+		let row = self.row;
+
+		let value : Vec<f64> = self.value.iter().zip(& rhs.value).map(|(e1, e2)| {
+			*e1 + *e2
+		}).collect();
+
+		Matrix {col, row, value}
+	}
+}
+
+impl ops::Add<& Matrix> for Matrix {
+	type Output = Matrix;
+
+	fn add(mut self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 += *e2;
+		});
+
+		self
+	}
+}
+
+impl ops::Sub<& Matrix> for & Matrix {
+	type Output = Matrix;
+
+	fn sub(self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		let col = self.col;
+		let row = self.row;
+
+		let value : Vec<f64> = self.value.iter().zip(& rhs.value).map(|(e1, e2)| {
+			*e1 - e2
+		}).collect();
+
+		Matrix {col, row, value}
+	}
+}
+
+impl ops::Sub<& Matrix> for Matrix {
+	type Output = Matrix;
+
+	fn sub(mut self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 -= e2;
+		});
+
+		self
+	}
+}
+
+impl ops::Mul<& Matrix> for & Matrix {
+	type Output = Matrix;
+
+	fn mul(self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.row);
+
+		let row = self.row;
+		let col = rhs.col;
+		let value = (0..row * col).map(|idx| {
+			let x = idx % col;
+			let y = idx / col;
+			let mut val = 0.0;
+
+			(0..self.col).for_each(|k| {
+				val += self.value[y * self.col + k] * rhs.value[k * rhs.col + x];
+			});
+
+			val
+		}).collect();
+
+		Matrix {value, row, col}
+	}
+}
+
+
+impl ops::Mul<& Matrix> for Matrix {
+	type Output = Matrix;
+
+	fn mul(self, rhs : & Matrix) -> Matrix {
+		assert!(self.col == rhs.row);
+
+		let row = self.row;
+		let col = rhs.col;
+		let value = (0..row * col).map(|idx| {
+			let x = idx % col;
+			let y = idx / col;
+			let mut val = 0.0;
+
+			(0..self.col).for_each(|k| {
+				val += self.value[y * self.col + k] * rhs.value[k * rhs.col + x];
+			});
+
+			val
+		}).collect();
+
+		Matrix {value, row, col}
+	}
+}
+
+/* Matrix multiplication by vector (m * v) */
+
+impl ops::Mul<& Vector> for & Matrix {
+	type Output = Vector;
+
+	fn mul(self, rhs : & Vector) -> Vector {
+		assert!(self.col == rhs.value.len());
+
+		let len = self.row;
+		let value = (0..len).map(|y| {
+			let mut val = 0.0;
+
+			(0..self.col).for_each(|k| {
+				val += self.value[y * self.col + k] * rhs.value[k];
+			});
+
+			val
+		}).collect();
+
+		Vector {value}
+	}
+}
+
+impl ops::Mul<& Vector> for Matrix {
+	type Output = Vector;
+
+	fn mul(self, rhs : & Vector) -> Vector {
+		assert!(self.col == rhs.value.len());
+
+		let len = self.row;
+		let value = (0..len).map(|y| {
+			let mut val = 0.0;
+
+			(0..self.col).for_each(|k| {
+				val += self.value[y * self.col + k] * rhs.value[k];
+			});
+
+			val
+		}).collect();
+
+		Vector {value}
+	}
+}
