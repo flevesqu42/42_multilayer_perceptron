@@ -6,7 +6,9 @@ pub fn sigmoid(x : f64) -> f64 {
 	1.0 / (1.0 + (-x).exp())
 }
 
-pub fn sigmoid_prime(result_sigmoid : f64) -> f64 {
+pub fn sigmoid_prime(x : f64) -> f64 {
+	let result_sigmoid = sigmoid(x);
+
 	result_sigmoid * (1.0 - result_sigmoid)
 }
 
@@ -32,32 +34,3 @@ pub fn cross_entropy(required_outputs : & Vec<Vec<f64>>, predicted_outputs : & V
 
 	- sum / required_outputs.len() as f64
 }
-
-
-// pub fn quadratic(dataset : & [Vec<f64>], outputs : & [Vec<f64>]) -> f64 {
-// 	1.0 / (2.0 * dataset.len() as f64) * {
-// 		let mut sum = 0.0;
-
-// 		for (data, output) in dataset.iter().zip(outputs) {
-// 			for (y, a) in data.iter().zip(output) {
-// 				sum += (y - a).powf(2.0)
-// 			}
-// 		}
-
-// 		sum
-// 	}
-// }
-
-// pub fn cross_entropy(dataset : & [Vec<f64>], output : & [Vec<f64>]) -> f64 {
-// 	- 1.0 / dataset.len() as f64 * {
-// 		let mut sum = 0.0;
-
-// 		for (data, output) in dataset.iter().zip(output) {
-// 			for (y, a) in data.iter().zip(output) {
-// 				sum += y * a.ln() + (1.0 - y) * (1.0 - a.ln());
-// 			}
-// 		}
-
-// 		sum
-// 	}
-// }

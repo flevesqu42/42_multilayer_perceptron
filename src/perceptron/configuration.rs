@@ -1,4 +1,4 @@
-use crate::maths::{sigmoid, sigmoid_prime, softmax, matrix::Vector};
+use crate::maths::{sigmoid, sigmoid_prime, softmax, matrix::Vector, cross_entropy};
 
 pub static WIDTH :	usize	= 2;
 pub static HEIGHT :	usize	= 5;
@@ -13,3 +13,5 @@ pub static ACTIVATION		: fn(f64) -> f64 = sigmoid;
 pub static ACTIVATION_PRIME : fn(f64) -> f64 = sigmoid_prime;
 
 pub static OUTPUT : fn(& Vector) -> Vector = softmax;
+
+pub static LOSS : fn(&Vec<Vec<f64>>, &Vec<Vec<f64>>) -> f64 = cross_entropy;

@@ -35,6 +35,16 @@ pub fn run(args: & [String]) -> Result<(), Error> {
 	Ok(())
 }
 
+fn make_prediction(mut perceptron : Perceptron, dataset : Dataset) {
+	let inputs_vector = dataset.inputs_vector();
+	let outputs_vector = dataset.outputs_vector();
+
+	let predictions = perceptron.predict_all(inputs_vector);
+	let loss = Perceptron::evaluate_loss(& outputs_vector, & predictions);
+
+	println!("Current configuration loss : {}", loss);
+}
+
 fn load_perceptron(path_to_configuration : & str) -> Result<Perceptron, Error> {
 	let file = match File::open(path_to_configuration) {
 		Ok(file)	=> Ok(file),
@@ -51,32 +61,3 @@ fn load_perceptron(path_to_configuration : & str) -> Result<Perceptron, Error> {
 
 	Ok(perceptron)
 }
-
-fn make_prediction(mut perceptron : Perceptron, dataset : Dataset) {
-	// dataset.outputs_vector
-}
-
-// fn make_prediction(mut perceptron : Perceptron, dataset : Dataset) {
-// 	let predictions = perceptron.predict_all(& dataset);
-// 	let loss = cross_entropy(& dataset.outputs_vector, & predictions);
-
-// 	println!("Predictions loss: {}", loss);
-
-// 	let mut good_predictions = 0;
-
-// 	for (prediction_idx, prediction) in predictions.iter().enumerate() {
-// 		let mut guessed_output_idx = 0;
-// 		let mut guessed_output = 0.0;
-// 		for (output_idx, output) in prediction.iter().enumerate() {
-// 			if *output > guessed_output {
-// 				guessed_output_idx = output_idx;
-// 				guessed_output = guessed_output;
-// 			}
-// 		}
-// 		if dataset.datas[prediction_idx].output[guessed_output_idx] == 1.0 {
-// 			good_predictions += 1;
-// 		}
-// 	}
-
-// 	println!("Prediction accuracy: {}% ({} / {})", good_predictions as f32 / dataset.datas.len() as f32, good_predictions, dataset.datas.len());
-// }

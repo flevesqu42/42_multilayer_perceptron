@@ -2,7 +2,9 @@ pub mod configuration;
 
 mod layer;
 mod predict;
+mod training;
 mod feedforward;
+mod backpropagation;
 
 use self::layer::Layer;
 use serde::{Serialize, Deserialize};

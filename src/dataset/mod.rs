@@ -11,7 +11,6 @@ use self::data::Data;
 pub struct Dataset {
 	pub datas:			Vec<Data>,
 	pub describe:		[Informations; 30],
-	pub outputs_vector:	Vec<Vec<f64>>
 }
 
 /* Implementations */
@@ -24,10 +23,10 @@ impl Dataset {
 
 		let datas = Dataset::get_datas(path)?;
 		let describe = Dataset::get_describe(&datas);
-		let outputs_vector = datas.iter().map(|data| data.output.to_vec()).collect();
 
-		Ok(Dataset{datas, describe, outputs_vector})
+		Ok(Dataset{datas, describe})
 	}
+
 
 	pub fn standardize(self) -> Dataset {
 		let mut datas : Vec<Data> = vec![];
@@ -38,8 +37,17 @@ impl Dataset {
 
 		let describe = Dataset::get_describe(& datas);
 
-		Dataset {datas, describe, outputs_vector: self.outputs_vector}
+		Dataset {datas, describe}
 	}
+
+	pub fn outputs_vector(& self) -> Vec<Vec<f64>> {
+		self.datas.iter().map(|data| data.output.to_vec()).collect()
+	} 
+
+	pub fn inputs_vector(& self) -> Vec<Vec<f64>> {
+		self.datas.iter().map(|data| data.features.to_vec()).collect()
+	} 
+
 
 	pub fn features_count(& self) -> usize {
 		self.describe.len()

@@ -33,5 +33,5 @@ fn parse_module(args : Vec<String>) -> Result<(), Error> {
 }
 
 fn error_handler(error : Error) {
-	print!("Error: {}", error);
+	println!("Error: {}", error);
 }

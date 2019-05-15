@@ -6,9 +6,8 @@ use crate::maths::matrix::*;
 
 impl Perceptron {
 
-	pub fn feedforward(& mut self, unvectorized_inputs : Vec<f64>) -> Vector {
-		let vectorized_inputs = Vector::new(unvectorized_inputs);
-		let mut inputs = & vectorized_inputs;
+	pub fn feedforward(& mut self, vectorized_inputs : & Vector) -> Vector {
+		let mut inputs = vectorized_inputs;
 
 		for layer in self.layers.iter_mut() {
 			inputs = layer.feedforward(inputs);
