@@ -1,5 +1,5 @@
 /* 42 Project, by flevesqu */
 
-**WORK IN PROGRESS**
+**REWORK IN PROGRESS**
 
 Multilayer Neural network, in a rusty way.
