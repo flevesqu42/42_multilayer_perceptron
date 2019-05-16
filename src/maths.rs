@@ -6,9 +6,7 @@ pub fn sigmoid(x : f64) -> f64 {
 	1.0 / (1.0 + (-x).exp())
 }
 
-pub fn sigmoid_prime(x : f64) -> f64 {
-	let result_sigmoid = sigmoid(x);
-
+pub fn sigmoid_prime(result_sigmoid : f64) -> f64 {
 	result_sigmoid * (1.0 - result_sigmoid)
 }
 

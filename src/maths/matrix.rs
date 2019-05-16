@@ -1,4 +1,4 @@
-mod operand;
+pub mod operand;
 
 use std::ops;
 use serde::{Serialize, Deserialize};
@@ -31,6 +31,20 @@ impl Matrix {
 		}
 
 		Matrix {row, col, value}
+	}
+
+	pub fn transposed(& self) -> Matrix {
+
+		let col = self.row;
+		let row = self.col;
+		let value = (0..self.value.len()).map(|idx| {
+			let x = idx / self.col;
+			let y = idx % self.col;
+
+			self.value[y * self.col + x]
+		}).collect();
+
+		Matrix {value, col, row}
 	}
 
 	pub fn into_vec(self) -> Vec<Vec<f64>> {
