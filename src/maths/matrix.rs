@@ -38,8 +38,8 @@ impl Matrix {
 		let col = self.row;
 		let row = self.col;
 		let value = (0..self.value.len()).map(|idx| {
-			let x = idx / self.col;
-			let y = idx % self.col;
+			let y = idx % self.row;
+			let x = idx / self.row;
 
 			self.value[y * self.col + x]
 		}).collect();
