@@ -78,6 +78,78 @@ impl VectorOperand for dyn PublicAttribute {
 	}
 }
 
+/* scalars for vector */
+
+impl ops::Mul<f64> for & Vector {
+	type Output = Vector;
+
+	fn mul(self, rhs : f64) -> Vector {
+		let value = self.value.iter().map(|e| {
+			e * rhs
+		}).collect();
+
+		Vector {value}
+	}
+}
+
+impl ops::Mul<f64> for Vector {
+	type Output = Vector;
+
+	fn mul(self, rhs : f64) -> Vector {
+		let value = self.value.into_iter().map(|e| {
+			e * rhs
+		}).collect();
+
+		Vector {value}
+	}
+}
+
+impl ops::Mul<& Vector> for f64 {
+	type Output = Vector;
+
+	fn mul(self, rhs : & Vector) -> Vector {
+		rhs * self
+	}
+}
+
+/* scalars for Matrix */
+
+impl ops::Mul<f64> for & Matrix {
+	type Output = Matrix;
+
+	fn mul(self, rhs : f64) -> Matrix {
+		let value = self.value.iter().map(|e| {
+			e * rhs
+		}).collect();
+		let row = self.row;
+		let col = self.col;
+
+		Matrix {value, row, col}
+	}
+}
+
+impl ops::Mul<f64> for Matrix {
+	type Output = Matrix;
+
+	fn mul(self, rhs : f64) -> Matrix {
+		let value = self.value.into_iter().map(|e| {
+			e * rhs
+		}).collect();
+		let row = self.row;
+		let col = self.col;
+
+		Matrix {value, row, col}
+	}
+}
+
+impl ops::Mul<& Matrix> for f64 {
+	type Output = Matrix;
+
+	fn mul(self, rhs : & Matrix) -> Matrix {
+		rhs * self
+	}
+}
+
 /* Operator overload for vector */
 
 impl ops::Add<& Vector> for & Vector {
@@ -290,5 +362,26 @@ impl ops::Mul<& Vector> for Matrix {
 		}).collect();
 
 		Vector {value}
+	}
+}
+
+/* vector multiplication by matrix (v * m) */
+
+impl ops::Mul<& Matrix> for & Vector {
+	type Output = Matrix;
+
+	fn mul(self, rhs : & Matrix) -> Matrix {
+		assert!(rhs.row == 1);
+
+		let col = rhs.col;
+		let row = self.value.len();
+		let value = (0..col * row).map(|idx| {
+			let y = idx / col;
+			let x = idx % col;
+
+			self.value[y] * rhs.value[x]
+		}).collect();
+
+		Matrix {col, row, value}
 	}
 }

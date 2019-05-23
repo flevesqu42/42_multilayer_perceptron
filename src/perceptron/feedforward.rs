@@ -6,8 +6,8 @@ use crate::maths::matrix::*;
 
 impl Perceptron {
 
-	pub fn feedforward(& mut self, vectorized_inputs : & Vector) -> Vector {
-		let mut inputs = vectorized_inputs;
+	pub fn feedforward(& mut self, inputs : & Vector) -> Vector {
+		let mut inputs = inputs;
 
 		for layer in self.layers.iter_mut() {
 			inputs = layer.feedforward(inputs);
@@ -20,13 +20,14 @@ impl Perceptron {
 
 impl Layer {
 
-	pub fn feedforward(& mut self, input : & Vector) -> & Vector {
+	fn feedforward(& mut self, input : & Vector) -> & Vector {
 		let w = & self.weights;		
 		let b = & self.bias;
 
-		self.weighted_input = ((w * input) + b).vectorize_inplace(configuration::ACTIVATION); // activation((w * i) + b)
+		self.weighted_sum = (w * input) + b; // activation((w * i) + b)
+		self.output = self.weighted_sum.vectorize(configuration::ACTIVATION);
 
-		& self.weighted_input
+		& self.output
 	}
 
 }

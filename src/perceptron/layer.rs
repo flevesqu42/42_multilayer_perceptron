@@ -10,7 +10,9 @@ pub struct Layer {
 	pub bias:			Vector,
 
 	#[serde(skip_serializing, default)]
-	pub weighted_input:	Vector,
+	pub weighted_sum:	Vector,
+	#[serde(skip_serializing, default)]
+	pub output:			Vector,
 	#[serde(skip_serializing, default)]
 	pub error:			Vector,
 }
@@ -21,10 +23,12 @@ impl Layer {
 
 		let weights = Layer::gen_weights(input_height, height, & mut rng);
 		let bias = Layer::gen_bias(height, & mut rng);
-		let weighted_input = Default::default();
+
+		let weighted_sum = Default::default();
+		let output = Default::default();
 		let error = Default::default();
 
-		Layer {weights, bias, weighted_input, error}
+		Layer {weights, bias, weighted_sum, error, output}
 	}
 
 	fn gen_weights(input_height : usize, height : usize, rng : & mut rand::prelude::ThreadRng) -> Matrix {

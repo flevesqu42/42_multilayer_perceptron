@@ -33,20 +33,6 @@ impl Matrix {
 		Matrix {row, col, value}
 	}
 
-	pub fn transposed(& self) -> Matrix {
-
-		let col = self.row;
-		let row = self.col;
-		let value = (0..self.value.len()).map(|idx| {
-			let y = idx % self.row;
-			let x = idx / self.row;
-
-			self.value[y * self.col + x]
-		}).collect();
-
-		Matrix {value, col, row}
-	}
-
 	pub fn into_vec(self) -> Vec<Vec<f64>> {
 		(0..self.row).map(|y| {
 			let pos = y * self.col;
@@ -63,6 +49,10 @@ impl Vector {
 	pub fn into_vec(self) -> Vec<f64> {
 		self.value
 	}
+}
+
+pub trait Transposable {
+	fn transpose(& self) -> Matrix;
 }
 
 pub trait PublicAttribute {
@@ -145,4 +135,29 @@ impl Vectorizable for Matrix {
 		self
 	}
 
+}
+
+impl Transposable for Matrix {
+	fn transpose(& self) -> Matrix {
+		let col = self.row;
+		let row = self.col;
+		let value = (0..self.value.len()).map(|idx| {
+			let y = idx % self.row;
+			let x = idx / self.row;
+
+			self.value[y * self.col + x]
+		}).collect();
+
+		Matrix {value, col, row}
+	}
+}
+
+impl Transposable for Vector {
+	fn transpose(& self) -> Matrix {
+		let col = self.value.len();
+		let row = 1;
+		let value = self.value.clone();
+
+		Matrix {value, col, row}
+	}
 }

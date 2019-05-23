@@ -2,11 +2,13 @@ pub mod matrix;
 
 use self::matrix::{Vector, PublicAttribute, Vectorizable};
 
-pub fn sigmoid(x : f64) -> f64 {
-	1.0 / (1.0 + (-x).exp())
+pub fn sigmoid(z : f64) -> f64 {
+	1.0 / (1.0 + (-z).exp())
 }
 
-pub fn sigmoid_prime(result_sigmoid : f64) -> f64 {
+pub fn sigmoid_prime(z : f64) -> f64 {
+	let result_sigmoid = 1.0 / (1.0 + (-z).exp());
+
 	result_sigmoid * (1.0 - result_sigmoid)
 }
 
