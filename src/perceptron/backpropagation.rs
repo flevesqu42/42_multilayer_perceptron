@@ -6,19 +6,19 @@ use crate::maths::matrix::operand::MatrixOperand;
 use super::configuration::ACTIVATION_PRIME;
 
 impl Perceptron {
-	pub fn compute_backpropagation(& mut self, inputs : & Vector, required_output : & Vector) {
-
-		let predicted_output = self.feedforward(inputs);
+	pub fn backpropagation(& mut self, input : & Vector, required_output : & Vector, learning_rate : f64) {
+		let predicted_output = self.feedforward(input);
 
 		self.set_output_error(& predicted_output, required_output);
 		self.backpropagate_error();
+		self.update_weights_and_bias(input, learning_rate);
 	}
 
 	fn set_output_error(& mut self, predicted_output : & Vector, required_output : & Vector) {
 		/*
 		  	Error will be strictly equivalent to derivative `dC / dz`.
 			in respect to chain rule it will be `∇aC ⊙ activation_prime(z)`
-			with C, z and a respectively the loss function, weighted inputs and outputs vector.
+			with C, z and a respectively the loss function, weighted input and outputs vector.
 
 			In cross entropy loss function we can avoid the learning slowdown side effect of chain rule
 			this code is attempted to only work with cross entropy loss function at this point.
@@ -44,24 +44,24 @@ impl Perceptron {
 		}
 	}
 
-	fn gradient_descent(& mut self, inputs : & Vector, learning_rate : f64) {
+	fn update_weights_and_bias(& mut self, input : & Vector, learning_rate : f64) {
 
-			let mut inputs = inputs;
+			let mut input = input;
 
 			for layer in self.layers.iter_mut() {
-				inputs = layer.update_weights_and_bias(inputs, learning_rate);
+				input = layer.update_weights_and_bias(input, learning_rate);
 			}
 	}
 }
 
 impl Layer {
-	fn update_weights_and_bias(& mut self, inputs : & Vector, learning_rate : f64) -> & Vector {
-			let inputs_transpose = & inputs.transpose();
-			let weights = & self.weights;
-			let bias = & self.bias;
-			let error = & self.error;
+	fn update_weights_and_bias(& mut self, input : & Vector, learning_rate : f64) -> & Vector {
+			let input_transpose	= & input.transpose();
+			let weights				= & self.weights;
+			let bias				= & self.bias;
+			let error				= & self.error;
 
-			let rate_of_change_in_weights	= & ((error * inputs_transpose) * learning_rate);
+			let rate_of_change_in_weights	= & ((error * input_transpose) * learning_rate);
 			let rate_of_change_in_bias		= & (error * learning_rate);
 
 			self.weights	= weights - rate_of_change_in_weights;

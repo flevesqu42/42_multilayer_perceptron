@@ -5,6 +5,7 @@ mod predict;
 mod training;
 mod feedforward;
 mod backpropagation;
+mod gradient_descent;
 
 use self::layer::Layer;
 use serde::{Serialize, Deserialize};
