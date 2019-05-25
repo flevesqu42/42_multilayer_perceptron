@@ -23,14 +23,15 @@ pub fn softmax(vector : & Vector) -> Vector {
 	vector.vectorize(f)
 }
 
-pub fn cross_entropy(required_outputs : & Vec<Vec<f64>>, predicted_outputs : & Vec<Vec<f64>>) -> f64 {
+pub fn cross_entropy(outputs_comparison : & Vec<(Vec<f64>, & Vec<f64>)>) -> f64 {
 	let mut sum = 0.0;
 
-	required_outputs.iter().zip(predicted_outputs).for_each(|(required_output, predicted_output)| {
-		for (y, yb) in required_output.iter().zip(predicted_output) {
+	outputs_comparison.iter().for_each(|(predicted_output, required_output)| {
+		for (yb, y) in predicted_output.iter().zip(required_output.iter()) {
+			println!("{} {}", y, yb);
 			sum += (y * yb.ln()) + ((1.0 - y) * (1.0 - yb).ln());
 		}
 	});
 
-	- sum / required_outputs.len() as f64
+	- sum / outputs_comparison.len() as f64
 }

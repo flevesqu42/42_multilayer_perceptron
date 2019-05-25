@@ -15,8 +15,14 @@ impl Perceptron {
 		}).collect()
 	}
 
-	pub fn evaluate_loss(required_outputs : & Vec<Vec<f64>>, predicted_outputs : & Vec<Vec<f64>>) -> f64 {
-		configuration::LOSS(required_outputs, predicted_outputs)
-	}
+	pub fn evaluate_loss(predicted_outputs : Vec<Vec<f64>>, required_outputs : & Vec<Vec<f64>>) -> f64 {
 
+		let mut outputs_comparison : Vec<(Vec<f64>, & Vec<f64>)> = Vec::with_capacity(predicted_outputs.len());
+
+		predicted_outputs.into_iter().zip(required_outputs).for_each(|(predicted_output, required_output)| {
+			outputs_comparison.push((predicted_output, & required_output))
+		});
+
+		configuration::LOSS(& outputs_comparison)
+	}
 }

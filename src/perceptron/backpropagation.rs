@@ -6,12 +6,14 @@ use crate::maths::matrix::operand::MatrixOperand;
 use super::configuration::ACTIVATION_PRIME;
 
 impl Perceptron {
-	pub fn backpropagation(& mut self, input : & Vector, required_output : & Vector, learning_rate : f64) {
-		let predicted_output = self.feedforward(input);
+	pub fn backpropagation(& mut self, input : & Vector, required_output : & Vector, learning_rate : f64) -> Vector {
 
+		let predicted_output = self.feedforward(input);
 		self.set_output_error(& predicted_output, required_output);
 		self.backpropagate_error();
 		self.update_weights_and_bias(input, learning_rate);
+
+		predicted_output
 	}
 
 	fn set_output_error(& mut self, predicted_output : & Vector, required_output : & Vector) {
@@ -57,15 +59,13 @@ impl Perceptron {
 impl Layer {
 	fn update_weights_and_bias(& mut self, input : & Vector, learning_rate : f64) -> & Vector {
 			let input_transpose	= & input.transpose();
-			let weights				= & self.weights;
-			let bias				= & self.bias;
-			let error				= & self.error;
+			let error			= & self.error;
 
-			let rate_of_change_in_weights	= & ((error * input_transpose) * learning_rate);
+			let rate_of_change_in_weights	= & (error * input_transpose * learning_rate);
 			let rate_of_change_in_bias		= & (error * learning_rate);
 
-			self.weights	= weights - rate_of_change_in_weights;
-			self.bias		= bias - rate_of_change_in_bias;
+			self.weights -= rate_of_change_in_weights;
+			self.bias	 -= rate_of_change_in_bias;
 
 			& self.output
 	}

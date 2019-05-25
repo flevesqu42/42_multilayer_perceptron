@@ -180,6 +180,18 @@ impl ops::Add<& Vector> for Vector {
 	}
 }
 
+impl ops::AddAssign<& Vector> for Vector {
+
+	fn add_assign(& mut self, rhs : & Vector) {
+		assert!(self.value.len() == rhs.value.len());
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 += *e2;
+		});
+
+	}
+}
+
 impl ops::Sub<& Vector> for & Vector {
 	type Output = Vector;
 
@@ -205,6 +217,18 @@ impl ops::Sub<& Vector> for Vector {
 		});
 
 		self
+	}
+}
+
+impl ops::SubAssign<& Vector> for Vector {
+
+	fn sub_assign(& mut self, rhs : & Vector) {
+		assert!(self.value.len() == rhs.value.len());
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 -= *e2;
+		});
+
 	}
 }
 
@@ -241,6 +265,18 @@ impl ops::Add<& Matrix> for Matrix {
 	}
 }
 
+impl ops::AddAssign<& Matrix> for Matrix {
+
+	fn add_assign(& mut self, rhs : & Matrix) {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 += *e2;
+		});
+
+	}
+}
+
 impl ops::Sub<& Matrix> for & Matrix {
 	type Output = Matrix;
 
@@ -269,6 +305,16 @@ impl ops::Sub<& Matrix> for Matrix {
 		});
 
 		self
+	}
+}
+
+impl ops::SubAssign<& Matrix> for Matrix {
+	fn sub_assign(& mut self, rhs : & Matrix) {
+		assert!(self.col == rhs.col && self.row == rhs.row);
+
+		self.value.iter_mut().zip(& rhs.value).for_each(|(e1, e2)| {
+			*e1 -= e2;
+		});
 	}
 }
 

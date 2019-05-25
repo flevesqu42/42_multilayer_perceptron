@@ -34,7 +34,11 @@ pub fn run(args: & [String]) -> Result<(), Error> {
 }
 
 fn train(perceptron : & mut Perceptron, normalized_dataset : Dataset) {
-	// TODO
+
+	let inputs = normalized_dataset.inputs_vector();
+	let outputs = normalized_dataset.outputs_vector();
+	perceptron.train(inputs, outputs);
+
 }
 
 fn export(perceptron : & Perceptron) -> Result<(), Error> {

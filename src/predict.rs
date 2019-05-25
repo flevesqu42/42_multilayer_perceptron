@@ -40,7 +40,7 @@ fn make_prediction(mut perceptron : Perceptron, dataset : Dataset) {
 	let outputs_vector = dataset.outputs_vector();
 
 	let predictions = perceptron.predict_all(inputs_vector);
-	let loss = Perceptron::evaluate_loss(& outputs_vector, & predictions);
+	let loss = Perceptron::evaluate_loss(predictions, & outputs_vector);
 
 	println!("Current configuration loss : {}", loss);
 }
