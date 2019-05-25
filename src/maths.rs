@@ -28,7 +28,6 @@ pub fn cross_entropy(outputs_comparison : & Vec<(Vec<f64>, & Vec<f64>)>) -> f64 
 
 	outputs_comparison.iter().for_each(|(predicted_output, required_output)| {
 		for (yb, y) in predicted_output.iter().zip(required_output.iter()) {
-			println!("{} {}", y, yb);
 			sum += (y * yb.ln()) + ((1.0 - y) * (1.0 - yb).ln());
 		}
 	});

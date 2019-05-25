@@ -5,7 +5,7 @@ pub static VERBOSE : bool = true;
 pub static WIDTH :	usize	= 2;
 pub static HEIGHT :	usize	= 5;
 
-pub static LEARNING_RATE : f64 = 1.0;
+pub static LEARNING_RATE : f64 = 0.2;
 pub static MINI_BATCH_SIZE : usize = 32;
 pub static EPOCHS : usize = 100;
 
