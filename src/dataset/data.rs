@@ -11,10 +11,12 @@ pub struct Data {
 impl Data {
 	pub fn new(datas : & csv::StringRecord) -> Result<Data, Error> {
 		let id = datas[0].to_string();
+		if datas.len() != 32 {
+			return Err(Error::new(ErrorKind::InvalidData, "Invalid dataset"));
+		}
 		let output = match &datas[1] {
 			"M"	=> [1.0, 0.0],
 			_	=> [0.0, 1.0],
-			// _	=> return Err(Error::new(ErrorKind::InvalidData, "unknown diagnosis"))
 		};
 		let features = Data::get_features(datas)?;
 

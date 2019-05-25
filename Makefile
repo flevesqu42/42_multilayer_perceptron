@@ -11,6 +11,8 @@ DEPENDENCIES =	src/main.rs\
 				src/predict.rs\
 				src/learning.rs\
 				src/configuration.rs\
+				src/dataset/data.rs\
+				src/dataset/informations.rs\
 				src/dataset/mod.rs\
 				src/perceptron/mod.rs\
 				src/perceptron/layer.rs\
