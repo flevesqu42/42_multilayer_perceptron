@@ -14,7 +14,7 @@ impl Perceptron {
 		for epoch in 0..EPOCHS {
 			let loss = self.run_one_epoch(training_dataset, learning_rate);
 			let validation_loss = self.get_validation_loss(validation_dataset);
-			println!("epoch {} - training_loss: {}, validation_loss: {}", epoch, loss, validation_loss);
+			println!("epoch {}/{} - training_loss: {}, validation_loss: {}", epoch, EPOCHS, loss, validation_loss);
 		}
 	}
 
