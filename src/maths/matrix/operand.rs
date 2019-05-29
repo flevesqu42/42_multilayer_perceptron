@@ -24,7 +24,6 @@ impl MatrixOperand for Matrix {
 			*e1 * *e2
 		}).collect();
 
-
 		Self {value, col, row}
 	}
 

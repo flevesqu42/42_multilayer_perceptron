@@ -44,6 +44,7 @@ impl Matrix {
 	}
 
 	pub fn zero(col : usize, row : usize) -> Matrix {
+		assert!(col != 0 && row != 0);
 		let value = vec![0.0; col * row];
 
 		Matrix {value, row, col}
@@ -61,6 +62,7 @@ impl Vector {
 	}
 
 	pub fn zero(len : usize) -> Vector {
+		assert!(len != 0);
 		let value = vec![0.0; len];
 
 		Vector {value}

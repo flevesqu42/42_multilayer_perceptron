@@ -1,4 +1,5 @@
 use super::*;
+use super::operand::*;
 
 #[test]
 #[should_panic(expected = "assertion failed: rows.len() > 0 && rows[0].len() > 0")]
@@ -106,4 +107,72 @@ fn matrix_transpose_4r() {
 
 	assert!(matrix.transpose() == transpose);
 	assert!(transpose.transpose() == matrix);
+}
+
+#[test]
+fn hadamard_vector_vector() {
+	let v1 = Vector::new(vec![1.0, 2.2, 3.0]);
+	let v2 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let r = Vector::new(vec![1.0, 4.4, 9.0]);
+
+	assert!(v1.hadamard(& v2) == r);
+}
+
+#[test]
+fn hadamard_matrix_matrix() {
+	let v1 = Matrix::new(vec![
+		vec![1.0, 2.2, 3.0],
+		vec![4.0, 5.0, 4.0]
+	]);
+	let v2 = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+		vec![1.0, 2.0, 3.0]
+	]);
+	let r = Matrix::new(vec![
+		vec![1.0, 4.4, 9.0],
+		vec![4.0, 10.0, 12.0]
+	]);
+
+	assert!(v1.hadamard(& v2) == r);
+}
+
+#[test]
+fn hadamard_matrix_vector() {
+	let v1 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.2],
+		vec![3.0]
+	]);
+	let v2 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let r = Matrix::new(vec![
+		vec![1.0],
+		vec![4.4],
+		vec![9.0]
+	]);
+
+	assert!(v1.hadamard(& v2) == r);
+}
+
+#[test]
+fn hadamard_vector_matrix() {
+	let v1 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let v2 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.2],
+		vec![3.0]]
+	);
+	let r = Vector::new(vec![1.0, 4.4, 9.0]);
+
+	assert!(v1.hadamard(& v2) == r);
+}
+
+#[test]
+#[should_panic(expected = "self.col == rhs.col() && self.row == rhs.row()")]
+fn hadamard_fail() {
+	let v1 = Matrix::new(vec![vec![1.0, 1.0]]);
+	let v2 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.0]
+	]);
+	v1.hadamard(&v2);
 }
