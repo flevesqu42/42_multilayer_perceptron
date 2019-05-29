@@ -7,6 +7,7 @@ RM = rm -f
 DEPENDENCIES =	src/main.rs\
 				src/maths.rs\
 				src/maths/matrix.rs\
+				src/maths/matrix/operand.rs\
 				src/analytics.rs\
 				src/predict.rs\
 				src/learning.rs\
@@ -23,6 +24,9 @@ DEPENDENCIES =	src/main.rs\
 
 all : $(EXEC_PATH) $(NAME)
 
+test :
+	cargo test
+
 $(EXEC_PATH) : $(DEPENDENCIES)
 	cargo build
 
@@ -37,4 +41,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test

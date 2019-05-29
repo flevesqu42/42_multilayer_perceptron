@@ -1,25 +1,28 @@
 pub mod operand;
 
+#[cfg(test)]
+mod tests;
+
 use std::ops;
 use serde::{Serialize, Deserialize};
 
 /* STRUCTURES */
 
-#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
 pub struct Matrix {
 	col:			usize,
 	row:			usize,
 	value:			Vec<f64>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq)]
 pub struct Vector {
 	value:	Vec<f64>,
 }
 
 impl Matrix {
 	pub fn new(mut rows : Vec<Vec<f64>>) -> Matrix {
-		assert!(rows.len() > 0);
+		assert!(rows.len() > 0 && rows[0].len() > 0);
 
 		let row = rows.len();
 		let col = rows[0].len();
@@ -49,6 +52,7 @@ impl Matrix {
 
 impl Vector {
 	pub fn new(value : Vec<f64>) -> Vector {
+		assert!(value.len() > 0);
 		Vector {value}
 	}
 
