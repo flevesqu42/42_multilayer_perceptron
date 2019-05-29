@@ -5,14 +5,14 @@ use serde::{Serialize, Deserialize};
 
 /* STRUCTURES */
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Matrix {
 	col:			usize,
 	row:			usize,
 	value:			Vec<f64>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct Vector {
 	value:	Vec<f64>,
 }
@@ -39,6 +39,12 @@ impl Matrix {
 			self.value[pos..pos + self.col].to_vec()
 		}).collect()
 	}
+
+	pub fn zero(col : usize, row : usize) -> Matrix {
+		let value = vec![0.0; col * row];
+
+		Matrix {value, row, col}
+	}
 }
 
 impl Vector {
@@ -48,6 +54,12 @@ impl Vector {
 
 	pub fn into_vec(self) -> Vec<f64> {
 		self.value
+	}
+
+	pub fn zero(len : usize) -> Vector {
+		let value = vec![0.0; len];
+
+		Vector {value}
 	}
 }
 

@@ -26,7 +26,9 @@ impl Perceptron {
 			this code is attempted to only work with cross entropy loss function at this point.
 		*/
 
-		self.layers.last_mut().unwrap().error = predicted_output - required_output;
+		// let activation_prime = & self.layers.last_mut().unwrap().weighted_sum.vectorize(ACTIVATION_PRIME);
+
+		self.layers.last_mut().unwrap().error = predicted_output - required_output // .hadamard_inplace(activation_prime);
 	}
 
 	fn backpropagate_error(& mut self) {
@@ -64,8 +66,8 @@ impl Layer {
 			let rate_of_change_in_weights	= & (error * input_transpose * learning_rate);
 			let rate_of_change_in_bias		= & (error * learning_rate);
 
-			self.weights -= rate_of_change_in_weights;
-			self.bias	 -= rate_of_change_in_bias;
+			self.updated_weights -= rate_of_change_in_weights;
+			self.updated_bias	 -= rate_of_change_in_bias;
 
 			& self.output
 	}

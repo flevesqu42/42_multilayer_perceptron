@@ -19,6 +19,7 @@ DEPENDENCIES =	src/main.rs\
 				src/perceptron/predict.rs\
 				src/perceptron/configuration.rs\
 				src/perceptron/gradient_descent.rs\
+				src/perceptron/backpropagation.rs\
 
 all : $(EXEC_PATH) $(NAME)
 

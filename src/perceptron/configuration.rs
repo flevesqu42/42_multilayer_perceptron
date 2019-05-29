@@ -3,7 +3,7 @@ use crate::maths::{sigmoid, sigmoid_prime, softmax, matrix::Vector, cross_entrop
 pub static VERBOSE : bool = true;
 
 pub static WIDTH :	usize	= 2;
-pub static HEIGHT :	usize	= 5;
+pub static HEIGHT :	usize	= 4;
 
 pub static LEARNING_RATE : f64 = 0.2;
 pub static MINI_BATCH_SIZE : usize = 32;
