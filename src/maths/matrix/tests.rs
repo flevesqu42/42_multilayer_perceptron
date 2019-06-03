@@ -312,7 +312,7 @@ fn add_matrix_matrix() {
 		vec![16.5, 9.0]
 	]);
 
-	println!("{:?}", & v1 + & v2);
+	println!("{:?} == {:?}", & v1 - & v2, r);
 	assert!(& v1 + & v2 == r);
 	assert!(& v2 + & v1 == r);
 	assert!(v2 + & v1 == r);
@@ -330,16 +330,22 @@ fn sub_matrix_matrix() {
 		vec![2.3, 2.0],
 		vec![5.5, 3.0]
 	]);
-	let r = Matrix::new(vec![
+	let r1 = Matrix::new(vec![
 		vec![6.0, 2.0],
 		vec![4.8, 4.0],
 		vec![11.0, 6.0]
 	]);
+	let r2 = Matrix::new(vec![
+		vec![-6.0, -2.0],
+		vec![-4.8, -4.0],
+		vec![-11.0, -6.0]
+	]);
 
-	println!("{:?}", & v1 - & v2);
-	assert!(& v1 - & v2 == r);
-	assert!(& v2 - & v1 == r);
-	assert!(v2 - & v1 == r);
+	println!("v1 - v2 == {:?} == {:?}", & v1 - & v2, r1);
+	println!("v2 - v1 == {:?} == {:?}", & v2 - & v1, r2);
+	assert!(& v1 - & v2 == r1);
+	assert!(& v2 - & v1 == r2);
+	assert!(v2 - & v1 == r2);
 }
 
 #[test]
@@ -348,7 +354,7 @@ fn add_vector_vector() {
 	let v2 = Vector::new(vec![6.0, 2.0, 4.8, 4.0, 11.0, 6.0]);
 	let r = Vector::new(vec![9.0, 3.0, 7.1, 6.0, 16.5, 9.0]);
 
-	println!("{:?}", & v1 + & v2);
+	println!("{:?} == {:?}", & v1 - & v2, r);
 	assert!(& v1 + & v2 == r);
 	assert!(& v2 + & v1 == r);
 	assert!(v2 + & v1 == r);
@@ -358,10 +364,12 @@ fn add_vector_vector() {
 fn sub_vector_vector() {
 	let v1 = Vector::new(vec![9.0, 3.0, 7.1, 6.0, 16.5, 9.0]);
 	let v2 = Vector::new(vec![3.0, 1.0, 2.3, 2.0, 5.5, 3.0]);
-	let r = Vector::new(vec![6.0, 2.0, 4.8, 4.0, 11.0, 6.0]);
+	let r1 = Vector::new(vec![6.0, 2.0, 4.8, 4.0, 11.0, 6.0]);
+	let r2 = Vector::new(vec![-6.0, -2.0, -4.8, -4.0, -11.0, -6.0]);
 
-	println!("{:?}", & v1 - & v2);
-	assert!(& v1 - & v2 == r);
-	assert!(& v2 - & v1 == r);
-	assert!(v2 - & v1 == r);
+	println!("v1 - v2 == {:?} == {:?}", & v1 - & v2, r1);
+	println!("v2 - v1 == {:?} == {:?}", & v2 - & v1, r2);
+	assert!(& v1 - & v2 == r1);
+	assert!(& v2 - & v1 == r2);
+	assert!(v2 - & v1 == r2);
 }
