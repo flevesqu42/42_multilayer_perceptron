@@ -176,3 +176,192 @@ fn hadamard_fail() {
 	]);
 	v1.hadamard(&v2);
 }
+
+#[test]
+fn hadamard_inplace_vector_vector() {
+	let v1 = Vector::new(vec![1.0, 2.2, 3.0]);
+	let v2 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let r = Vector::new(vec![1.0, 4.4, 9.0]);
+
+	assert!(v1.hadamard_inplace(& v2) == r);
+}
+
+#[test]
+fn hadamard_inplace_matrix_matrix() {
+	let v1 = Matrix::new(vec![
+		vec![1.0, 2.2, 3.0],
+		vec![4.0, 5.0, 4.0]
+	]);
+	let v2 = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+		vec![1.0, 2.0, 3.0]
+	]);
+	let r = Matrix::new(vec![
+		vec![1.0, 4.4, 9.0],
+		vec![4.0, 10.0, 12.0]
+	]);
+
+	assert!(v1.hadamard_inplace(& v2) == r);
+}
+
+#[test]
+fn hadamard_inplace_matrix_vector() {
+	let v1 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.2],
+		vec![3.0]
+	]);
+	let v2 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let r = Matrix::new(vec![
+		vec![1.0],
+		vec![4.4],
+		vec![9.0]
+	]);
+
+	assert!(v1.hadamard_inplace(& v2) == r);
+}
+
+#[test]
+fn hadamard_inplace_vector_matrix() {
+	let v1 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let v2 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.2],
+		vec![3.0]]
+	);
+	let r = Vector::new(vec![1.0, 4.4, 9.0]);
+
+	assert!(v1.hadamard_inplace(& v2) == r);
+}
+
+#[test]
+#[should_panic(expected = "self.col() == rhs.col() && self.row() == rhs.row()")]
+fn hadamard_inplace_fail() {
+	let v1 = Matrix::new(vec![vec![1.0, 1.0]]);
+	let v2 = Matrix::new(vec![
+		vec![1.0],
+		vec![2.0]
+	]);
+	v1.hadamard_inplace(&v2);
+}
+
+#[test]
+fn dot() {
+	let v1 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let v2 = Vector::new(vec![2.0, 2.2, 9.0]);
+	let r = (2.0 * 1.0) + (2.0 * 2.2) + (3.0 * 9.0);
+
+	assert!(v1.dot(& v2) == r);
+}
+
+#[test]
+#[should_panic(expected = "self.value.len() == rhs.value.len()")]
+fn dot_fail() {
+	let v1 = Vector::new(vec![1.0, 2.0, 3.0]);
+	let v2 = Vector::new(vec![2.0, 2.2, 9.0, 4.0]);
+
+	v1.dot(& v2);
+}
+
+
+#[test]
+fn scalar_vector() {
+	let v1 = Vector::new(vec![3.0, 2.4, 5.5]);
+	let scalar = 2.0;
+	let r = Vector::new(vec![6.0, 4.8, 11.0]);
+
+	assert!(& v1 * scalar == r);
+	assert!(scalar * & v1 == r);
+	assert!(v1 * scalar == r);
+}
+
+#[test]
+fn scalar_matrix() {
+	let v1 = Matrix::new(vec![
+		vec![3.0, 1.0],
+		vec![2.4, 2.0],
+		vec![5.5, 3.0]
+	]);
+	let scalar = 2.0;
+	let r = Matrix::new(vec![
+		vec![6.0, 2.0],
+		vec![4.8, 4.0],
+		vec![11.0, 6.0]
+	]);
+
+	assert!(& v1 * scalar == r);
+	assert!(scalar * & v1 == r);
+	assert!(v1 * scalar == r);
+}
+
+#[test]
+fn add_matrix_matrix() {
+	let v1 = Matrix::new(vec![
+		vec![3.0, 1.0],
+		vec![2.3, 2.0],
+		vec![5.5, 3.0]
+	]);
+	let v2 = Matrix::new(vec![
+		vec![6.0, 2.0],
+		vec![4.8, 4.0],
+		vec![11.0, 6.0]
+	]);
+	let r = Matrix::new(vec![
+		vec![9.0, 3.0],
+		vec![7.1, 6.0],
+		vec![16.5, 9.0]
+	]);
+
+	println!("{:?}", & v1 + & v2);
+	assert!(& v1 + & v2 == r);
+	assert!(& v2 + & v1 == r);
+	assert!(v2 + & v1 == r);
+}
+
+#[test]
+fn sub_matrix_matrix() {
+	let v1 = Matrix::new(vec![
+		vec![9.0, 3.0],
+		vec![7.1, 6.0],
+		vec![16.5, 9.0]
+	]);
+	let v2 = Matrix::new(vec![
+		vec![3.0, 1.0],
+		vec![2.3, 2.0],
+		vec![5.5, 3.0]
+	]);
+	let r = Matrix::new(vec![
+		vec![6.0, 2.0],
+		vec![4.8, 4.0],
+		vec![11.0, 6.0]
+	]);
+
+	println!("{:?}", & v1 - & v2);
+	assert!(& v1 - & v2 == r);
+	assert!(& v2 - & v1 == r);
+	assert!(v2 - & v1 == r);
+}
+
+#[test]
+fn add_vector_vector() {
+	let v1 = Vector::new(vec![3.0, 1.0, 2.3, 2.0, 5.5, 3.0]);
+	let v2 = Vector::new(vec![6.0, 2.0, 4.8, 4.0, 11.0, 6.0]);
+	let r = Vector::new(vec![9.0, 3.0, 7.1, 6.0, 16.5, 9.0]);
+
+	println!("{:?}", & v1 + & v2);
+	assert!(& v1 + & v2 == r);
+	assert!(& v2 + & v1 == r);
+	assert!(v2 + & v1 == r);
+}
+
+#[test]
+fn sub_vector_vector() {
+	let v1 = Vector::new(vec![9.0, 3.0, 7.1, 6.0, 16.5, 9.0]);
+	let v2 = Vector::new(vec![3.0, 1.0, 2.3, 2.0, 5.5, 3.0]);
+	let r = Vector::new(vec![6.0, 2.0, 4.8, 4.0, 11.0, 6.0]);
+
+	println!("{:?}", & v1 - & v2);
+	assert!(& v1 - & v2 == r);
+	assert!(& v2 - & v1 == r);
+	assert!(v2 - & v1 == r);
+}

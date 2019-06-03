@@ -62,21 +62,6 @@ impl MatrixOperand for Vector {
 	}
 }
 
-impl VectorOperand for dyn PublicAttribute {
-
-	fn dot(& self, rhs: & dyn PublicAttribute) -> f64 {
-		assert!(self.value().len() == rhs.value().len());
-
-		let mut sum = 0.0;
-
-		self.value().iter().zip(rhs.value()).for_each(|(e1, e2)| {
-			sum += *e1 * *e2;
-		});
-
-		sum
-	}
-}
-
 /* scalars for vector */
 
 impl ops::Mul<f64> for & Vector {

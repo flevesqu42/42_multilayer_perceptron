@@ -67,6 +67,18 @@ impl Vector {
 
 		Vector {value}
 	}
+
+	pub fn dot(& self, rhs : & Vector) -> f64 {
+		assert!(self.value.len() == rhs.value.len());
+		let mut sum = 0.0;
+
+		self.value.iter().zip(& rhs.value).for_each(|(e1, e2)| {
+			sum += *e1 * *e2;
+		});
+
+		sum
+	}
+
 }
 
 pub trait Transposable {
