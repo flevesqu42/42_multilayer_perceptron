@@ -373,3 +373,30 @@ fn sub_vector_vector() {
 	assert!(& v2 - & v1 == r2);
 	assert!(v2 - & v1 == r2);
 }
+
+#[test]
+fn mul_matrix_matrix() {
+	let m1 = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+		vec![2.0, 4.0, 6.0],
+	]);
+	let m2 = Matrix::new(vec![
+		vec![4.0, 2.0],
+		vec![2.0, 4.0],
+		vec![6.0, 8.0],
+	]);
+	let r1 = Matrix::new(vec![
+		vec![26.0, 34.0],
+		vec![52.0, 68.0],
+	]);
+	let r2 = Matrix::new(vec![
+		vec![8.0, 16.0, 24.0],
+		vec![10.0, 20.0, 30.0],
+		vec![22.0, 44.0, 66.0],
+	]);
+
+	println!("m1 * m2 == {:?} == {:?}", & m1 * & m2, r1);
+	println!("m2 * m1 == {:?} == {:?}", & m2 * & m1, r2);
+	assert!(& m1 * & m2 == r1);
+	assert!(& m2 * & m1 == r2);
+}
