@@ -399,4 +399,37 @@ fn mul_matrix_matrix() {
 	println!("m2 * m1 == {:?} == {:?}", & m2 * & m1, r2);
 	assert!(& m1 * & m2 == r1);
 	assert!(& m2 * & m1 == r2);
+	assert!(m2 * & m1 == r2);
 }
+
+#[test]
+fn mul_matrix_vector() {
+	let m = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+		vec![4.0, 5.0, 6.0],
+	]);
+	let v = Vector::new(vec![1.0, 2.0, 3.0]);
+	let r = Vector::new(vec![14.0, 32.0]);
+
+	println!("m * v == {:?} == {:?}", & m * & v, r);
+	assert!(& m * & v == r);
+	assert!(m * & v == r);
+}
+
+#[test]
+fn mul_vector_matrix() {
+	let v = Vector::new(vec![1.0, 2.0, 3.0]);
+	let m = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+	]);
+	let r = Matrix::new(vec![
+		vec![1.0, 2.0, 3.0],
+		vec![2.0, 4.0, 6.0],
+		vec![3.0, 6.0, 9.0],
+	]);
+
+	println!("v * m == {:?} == {:?}", & v * & m, r);
+	assert!( & v * & m == r);
+	assert!(v * & m == r);
+}
+

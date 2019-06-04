@@ -415,3 +415,22 @@ impl ops::Mul<& Matrix> for & Vector {
 		Matrix {col, row, value}
 	}
 }
+
+impl ops::Mul<& Matrix> for Vector {
+	type Output = Matrix;
+
+	fn mul(self, rhs : & Matrix) -> Matrix {
+		assert!(rhs.row == 1);
+
+		let col = rhs.col;
+		let row = self.value.len();
+		let value = (0..col * row).map(|idx| {
+			let y = idx / col;
+			let x = idx % col;
+
+			self.value[y] * rhs.value[x]
+		}).collect();
+
+		Matrix {col, row, value}
+	}
+}
